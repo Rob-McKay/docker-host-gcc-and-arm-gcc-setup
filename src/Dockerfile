@@ -2,15 +2,23 @@ FROM ubuntu:latest
 
 ENV ARM_GCC_PATH=/opt/gcc-arm-none-eabi
 
-LABEL Description="Image for building and debugging arm-embedded projects using the GCC ARM toolchain (gcc-arm-none-eabi-10-2020-q4-major)"
+LABEL Description="Image for building and debugging arm-embedded projects using the GCC ARM toolchain which also has the host gcc-10 toolchain installed"
 LABEL maintainer="Rob McKay"
+
+RUN apt-get update && apt install -y ca-certificates 
+#&& echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
 
 # wget is needed to get the toolchain
 
-RUN add-apt-repository ppa:ubuntu-toolchain-r/ppa \
+# Use the closest mirrors, rather than the defaults from the docker image
+
+RUN echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal main restricted universe multiverse">/etc/apt/sources.list && \
+    echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal-updates main restricted universe multiverse">>/etc/apt/sources.list && \
+    echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal-security main restricted universe multiverse">>/etc/apt/sources.list && \
+    echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal-backports main restricted universe multiverse">>/etc/apt/sources.list && \
     apt-get update && \
-    apt-get install -qq -y ninja-build wget bzip2 binutils binutils-common make gcc-10 g++-10\
-        gcc- gcc-8- cpp- cpp-8- manpages- linux-libc-dev- manpages-dev- --no-install-recommends && \
+    apt-get install -y -f libc6-dev --no-install-recommends && \
+    apt-get install -y -f ninja-build wget bzip2 binutils binutils-common build-essential manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
