@@ -18,7 +18,7 @@ RUN echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal main restricted univ
     echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal-backports main restricted universe multiverse">>/etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y -f libc6-dev --no-install-recommends && \
-    apt-get install -y -f ninja-build wget bzip2 binutils binutils-common bison build-essential manpages- manpages-dev- --no-install-recommends && \
+    apt-get install -y -f ninja-build wget bzip2 binutils binutils-common bison flex build-essential manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
