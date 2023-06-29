@@ -2,23 +2,16 @@ FROM ubuntu:latest
 
 ENV ARM_GCC_PATH=/opt/gcc-arm-none-eabi
 
-LABEL Description="Image for building and debugging arm-embedded projects using the GCC ARM toolchain which also has the host gcc-10 toolchain installed"
+LABEL Description="Image for building and debugging arm-embedded projects using the GCC 12.2rel1 ARM toolchain which also has the host gcc-11 toolchain installed"
 LABEL maintainer="Rob McKay"
 
 RUN apt-get update && apt install -y ca-certificates 
-#&& echo 'APT::Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries
 
 # wget is needed to get the toolchain
 
-# Use the closest mirrors, rather than the defaults from the docker image
-
-RUN echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal main restricted universe multiverse">/etc/apt/sources.list && \
-    echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal-updates main restricted universe multiverse">>/etc/apt/sources.list && \
-    echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal-security main restricted universe multiverse">>/etc/apt/sources.list && \
-    echo "deb mirror://mirrors.ubuntu.com/mirrors.txt focal-backports main restricted universe multiverse">>/etc/apt/sources.list && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y -f libc6-dev --no-install-recommends && \
-    apt-get install -y -f ninja-build wget bzip2 binutils binutils-common bison flex bc build-essential zip manpages- manpages-dev- --no-install-recommends && \
+    apt-get install -y -f ninja-build wget bzip2 binutils binutils-common bison flex bc build-essential zip libssl-dev manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
     cpan install Digest::CRC
@@ -34,13 +27,7 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2
 # RUN apt-get install -y git
 
 # get the toolchain
-#RUN wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 -O gcc-arm-none-eabi.tar.bz2 -q --no-check-certificate && \
-#    mkdir $ARM_GCC_PATH && \
-#    tar xjf gcc-arm-none-eabi.tar.bz2 -C $ARM_GCC_PATH --strip-components 1 && \
-#    rm gcc-arm-none-eabi.tar.bz2 && \
-#    rm -rf $ARM_GCC_PATH/share/doc/ $ARM_GCC_PATH/share/gcc-arm-none-eabi/samples/
-
-RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi.tar.xz -O gcc-arm-none-eabi.tar.xz -q --no-check-certificate && \
+RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz -O gcc-arm-none-eabi.tar.xz -q --no-check-certificate && \
     mkdir $ARM_GCC_PATH && \
     tar xf gcc-arm-none-eabi.tar.xz -C $ARM_GCC_PATH --strip-components 1 && \
     rm gcc-arm-none-eabi.tar.xz && \
