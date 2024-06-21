@@ -1,10 +1,12 @@
-FROM ubuntu:latest
+#FROM ubuntu:latest
+FROM ubuntu:22.04
 
 ENV ARM_GCC_PATH=/opt/gcc-arm-none-eabi
 ARG ARM_GCC_VER=13.2.rel1
 ARG CMAKE_VER=3.27.8
+ARG HOST_GCC_VER=12
 
-LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-12 toolchain installed. Includes CMake ${CMAKE_VER}"
+LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER}"
 LABEL maintainer="Rob McKay"
 
 RUN apt-get update && apt install -y ca-certificates 
@@ -13,7 +15,7 @@ RUN apt-get update && apt install -y ca-certificates
 
 RUN apt-get update && \
     apt-get install -y -f libc6-dev --no-install-recommends && \
-    apt-get install -y -f gcc-12 ninja-build wget bzip2 binutils binutils-common bison flex bc build-essential zip libssl-dev manpages- manpages-dev- --no-install-recommends && \
+    apt-get install -y -f gcc-${HOST_GCC_VER} ninja-build wget bzip2 binutils binutils-common bison flex bc build-essential zip libssl-dev manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
     cpan install Digest::CRC
@@ -36,5 +38,5 @@ RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_GCC_VER}/bi
     rm -rf $ARM_GCC_PATH/share/doc/ $ARM_GCC_PATH/share/gcc-arm-none-eabi/samples/
 
 # add the tools to the path
-ENV PATH="/opt/cmake-3.24.2-linux-x86_64/bin:$ARM_GCC_PATH/bin:${PATH}"
+ENV PATH="/opt/cmake-${CMAKE_VER}-linux-x86_64/bin:$ARM_GCC_PATH/bin:${PATH}"
 WORKDIR /home/build
