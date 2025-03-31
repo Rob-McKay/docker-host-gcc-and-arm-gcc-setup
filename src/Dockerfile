@@ -1,10 +1,14 @@
 #FROM ubuntu:latest
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV ARM_GCC_PATH=/opt/gcc-arm-none-eabi
-ARG ARM_GCC_VER=13.2.rel1
+ARG ARM_GCC_VER=14.2.rel1
 ARG CMAKE_VER=3.27.8
-ARG HOST_GCC_VER=12
+ARG HOST_GCC_VER=14
+
+ARG USERNAME=gcc_user
+ARG USER_UID=9100
+ARG USER_GID=$USER_UID
 
 LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER}"
 LABEL maintainer="Rob McKay"
@@ -36,6 +40,13 @@ RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_GCC_VER}/bi
     tar xf gcc-arm-none-eabi.tar.xz -C $ARM_GCC_PATH --strip-components 1 && \
     rm gcc-arm-none-eabi.tar.xz && \
     rm -rf $ARM_GCC_PATH/share/doc/ $ARM_GCC_PATH/share/gcc-arm-none-eabi/samples/
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+
+# Set the user to the new user
+USER $USERNAME
 
 # add the tools to the path
 ENV PATH="/opt/cmake-${CMAKE_VER}-linux-x86_64/bin:$ARM_GCC_PATH/bin:${PATH}"
