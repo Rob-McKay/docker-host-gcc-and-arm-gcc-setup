@@ -1,16 +1,17 @@
 #FROM ubuntu:latest
+ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 FROM ubuntu:24.04
 
 ENV ARM_GCC_PATH=/opt/gcc-arm-none-eabi
 ARG ARM_GCC_VER=14.2.rel1
-ARG CMAKE_VER=3.27.8
+ARG CMAKE_VER=3.31.6
 ARG HOST_GCC_VER=14
 
 ARG USERNAME=gcc_user
 ARG USER_UID=9100
 ARG USER_GID=$USER_UID
 
-LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER}"
+LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER} and Python 3"
 LABEL maintainer="Rob McKay"
 
 RUN apt-get update && apt install -y ca-certificates 
@@ -19,9 +20,25 @@ RUN apt-get update && apt install -y ca-certificates
 
 RUN apt-get update && \
     apt-get install -y -f libc6-dev --no-install-recommends && \
-    apt-get install -y -f gcc-${HOST_GCC_VER} ninja-build wget bzip2 binutils binutils-common bison flex bc build-essential zip libssl-dev manpages- manpages-dev- --no-install-recommends && \
+    apt-get install -y -f \
+        bc \
+        binutils \
+        binutils-common \
+        bison \
+        build-essential \
+        bzip2 \
+        flex \
+        gcc-${HOST_GCC_VER} \
+        libssl-dev \
+        ninja-build \
+        python3 \
+        python3-pip \
+        pylint \
+        wget \
+        zip \
+        manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* \
+    rm -rf /var/lib/apt/lists/* && \
     cpan install Digest::CRC
 
 WORKDIR /opt
