@@ -59,11 +59,11 @@ RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_GCC_VER}/bi
     rm -rf $ARM_GCC_PATH/share/doc/ $ARM_GCC_PATH/share/gcc-arm-none-eabi/samples/
 
 # Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+#RUN groupadd --gid $USER_GID $USERNAME \
+#    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 
 # Set the user to the new user
-USER $USERNAME
+#USER $USERNAME
 
 # add the tools to the path
 ENV PATH="/opt/cmake-${CMAKE_VER}-linux-x86_64/bin:$ARM_GCC_PATH/bin:${PATH}"
