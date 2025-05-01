@@ -7,9 +7,9 @@ ARG ARM_GCC_VER=14.2.rel1
 ARG CMAKE_VER=3.31.6
 ARG HOST_GCC_VER=14
 
-ARG USERNAME=gcc_user
-ARG USER_UID=9100
-ARG USER_GID=$USER_UID
+#ARG USERNAME=gcc_user
+#ARG USER_UID=9100
+#ARG USER_GID=$USER_UID
 
 LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER} and Python 3"
 LABEL maintainer="Rob McKay"
