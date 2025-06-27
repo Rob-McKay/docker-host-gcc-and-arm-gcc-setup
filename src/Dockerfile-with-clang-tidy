@@ -10,6 +10,7 @@ ARG HOST_GCC_VER=14
 LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER}, clang-tidy and Python 3"
 LABEL maintainer="Rob McKay"
 
+RUN apt update && apt upgrade -y
 RUN apt-get update && apt install -y ca-certificates 
 
 # wget is needed to get the toolchain
