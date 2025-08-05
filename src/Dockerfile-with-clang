@@ -48,6 +48,9 @@ RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${HOST_C
 ENV CC=clang-${HOST_CLANG_VER}
 ENV CXX=clang++-${HOST_CLANG_VER}
 
+# Adding git bloats the image by 95MB
+RUN apt install -y git
+
 RUN    apt-get clean && \
 rm -rf /var/lib/apt/lists/* && \
 cpan install Digest::CRC
@@ -58,10 +61,7 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-
     chmod +x cmake-linux-x86_64.sh && \
     ./cmake-linux-x86_64.sh  --prefix=/opt --include-subdir --skip-licence && \
     rm cmake-linux-x86_64.sh
-
-# Adding git bloats the image by 95MB
-RUN apt-get install -y git
-
+    
 # get the toolchain
 RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_GCC_VER}/binrel/arm-gnu-toolchain-${ARM_GCC_VER}-x86_64-arm-none-eabi.tar.xz -O gcc-arm-none-eabi.tar.xz -q --no-check-certificate && \
     mkdir $ARM_GCC_PATH && \
