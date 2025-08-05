@@ -43,7 +43,7 @@ zip \
 cpp- cpp-13- gcc- g++- gcc-13- \
 manpages- manpages-dev- --no-install-recommends
 
-RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${HOST_CLANG_VER} clang clang-tidy
+RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${HOST_CLANG_VER} clang  &&  apt-get install -y clang-tidy-${HOST_CLANG_VER}
 
 ENV CC=clang-${HOST_CLANG_VER}
 ENV CXX=clang++-${HOST_CLANG_VER}
