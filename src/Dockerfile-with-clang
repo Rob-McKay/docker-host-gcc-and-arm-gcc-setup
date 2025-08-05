@@ -13,10 +13,10 @@ LABEL maintainer="Rob McKay"
 # wget is needed to get the clang key and ARM toolchain
 RUN apt-get update && apt-get install -y -f  --no-install-recommends wget software-properties-common ca-certificates manpages- manpages-dev- 
     
-    # Copy the CA certificate from the context to the build container
-    #COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
-    #COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
-    #COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
+# Copy the CA certificate from the context to the build container
+#COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
 ## Update the CA certificates in the container
 #RUN update-ca-certificates
 
@@ -60,7 +60,7 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-
     rm cmake-linux-x86_64.sh
 
 # Adding git bloats the image by 95MB
-# RUN apt-get install -y git
+RUN apt-get install -y git
 
 # get the toolchain
 RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_GCC_VER}/binrel/arm-gnu-toolchain-${ARM_GCC_VER}-x86_64-arm-none-eabi.tar.xz -O gcc-arm-none-eabi.tar.xz -q --no-check-certificate && \
