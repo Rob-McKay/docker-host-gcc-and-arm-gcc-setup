@@ -12,42 +12,45 @@ LABEL maintainer="Rob McKay"
 
 # wget is needed to get the clang key and ARM toolchain
 RUN apt-get update && apt-get install -y -f  --no-install-recommends wget software-properties-common ca-certificates manpages- manpages-dev- 
-
-# Copy the CA certificate from the context to the build container
-#COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
-#COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
-#COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
+    
+    # Copy the CA certificate from the context to the build container
+    #COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
+    #COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
+    #COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
 ## Update the CA certificates in the container
 #RUN update-ca-certificates
 
 RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
 
 RUN apt-get update && \
-    apt-get install -y -f libc6-dev --no-install-recommends && \
-    apt-get install -y -f \
-    bc \
-    binutils \
-    binutils-common \
-    bison \
-    bzip2 \
-    flex \
-    libssl-dev \
-    make \
-    ninja-build \
-    perl \
-    python3 \
-    python3-pip \
-    pylint \
-    xz-utils \
-    zip \
-    cpp- cpp-13- gcc- g++- gcc-13- \
-    manpages- manpages-dev- --no-install-recommends
+apt-get install -y -f libc6-dev --no-install-recommends && \
+apt-get install -y -f \
+bc \
+binutils \
+binutils-common \
+bison \
+bzip2 \
+flex \
+libssl-dev \
+make \
+ninja-build \
+perl \
+python3 \
+python3-pip \
+pylint \
+xz-utils \
+zip \
+cpp- cpp-13- gcc- g++- gcc-13- \
+manpages- manpages-dev- --no-install-recommends
 
 RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${HOST_CLANG_VER} clang clang-tidy
 
+ENV CC=clang-${HOST_CLANG_VER}
+ENV CXX=clang++-${HOST_CLANG_VER}
+
 RUN    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    cpan install Digest::CRC
+rm -rf /var/lib/apt/lists/* && \
+cpan install Digest::CRC
 
 WORKDIR /opt
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
