@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y -f  --no-install-recommends wget softwa
 #COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
 #COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
 #COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
-## Update the CA certificates in the container
-#RUN update-ca-certificates
+# Update the CA certificates in the container
+RUN update-ca-certificates
 
 RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
 
@@ -46,10 +46,10 @@ RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${HOST_C
 ENV CC=clang-${HOST_CLANG_VER}
 ENV CXX=clang++-${HOST_CLANG_VER}
 
-
+# Add dotnet 9 SDK - sdk needed for the dotnet tool command
 RUN add-apt-repository ppa:dotnet/backports && \
 apt-get update && \
-apt-get install -y dotnet-runtime-9.0
+apt-get install -y dotnet-sdk-9.0
 
 # Adding git bloats the image by 95MB
 RUN apt install -y git
