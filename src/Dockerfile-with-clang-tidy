@@ -13,17 +13,18 @@ LABEL maintainer="Rob McKay"
 
 # wget is needed to get the clang key and ARM toolchain
 RUN apt-get update && apt-get install -y -f  --no-install-recommends wget software-properties-common ca-certificates manpages- manpages-dev- 
-    
+
 # Copy the CA certificate from the context to the build container
-# COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
-# COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
-# COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
 # Update the CA certificates in the container
 RUN update-ca-certificates
 
 RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
 
-RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${CLANG_TIDY_VER} clang  &&  apt-get install -y clang-tidy-${CLANG_TIDY_VER}
+RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${CLANG_TIDY_VER} clang-tidy 
+# RUN  apt-get install -y clang-tidy-${CLANG_TIDY_VER}
 
 
 RUN apt update && apt upgrade -y
@@ -46,7 +47,6 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         pylint \
-        wget \
         zip \
         manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
