@@ -23,11 +23,14 @@ RUN update-ca-certificates
 
 RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
 
-RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${CLANG_TIDY_VER} clang-tidy 
-# RUN  apt-get install -y clang-tidy-${CLANG_TIDY_VER}
+#RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${CLANG_TIDY_VER} clang-tidy 
+RUN apt-add-repository "deb https://apt.llvm.org/noble/ llvm-toolchain-noble main" && \
+ apt-add-repository "deb https://apt.llvm.org/noble/ llvm-toolchain-noble-${CLANG_TIDY_VER} main" && \
+ apt-get update
 
+#RUN apt-get install -y clang-tidy-${CLANG_TIDY_VER}
 
-RUN apt update && apt upgrade -y
+#RUN apt update && apt upgrade -y
 
 # wget is needed to get the toolchain
 
@@ -47,6 +50,7 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         pylint \
+        clang-tidy-${CLANG_TIDY_VER} \
         zip \
         manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
