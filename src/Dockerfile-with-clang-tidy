@@ -15,9 +15,9 @@ LABEL maintainer="Rob McKay"
 RUN apt-get update && apt-get install -y -f  --no-install-recommends wget software-properties-common ca-certificates manpages- manpages-dev- 
 
 # Copy the CA certificate from the context to the build container
-# COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
-# COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
-# COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
+#COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
 # Update the CA certificates in the container
 RUN update-ca-certificates
 
@@ -50,8 +50,7 @@ RUN apt-get update && \
         python3-pip \
         pylint \
         clang-tidy-${CLANG_TIDY_VER} \
-        clang-cov-${CLANG_TIDY_VER} \
-        clang-profdata-${CLANG_TIDY_VER} \
+        llvm-${CLANG_TIDY_VER} \
         git \
         zip \
         manpages- manpages-dev- --no-install-recommends
