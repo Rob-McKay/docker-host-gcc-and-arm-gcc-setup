@@ -51,6 +51,7 @@ RUN apt-get update && \
         python3-pip \
         pylint \
         clang-tidy-${CLANG_TIDY_VER} \
+        git \
         zip \
         manpages- manpages-dev- --no-install-recommends && \
     apt-get clean && \
@@ -63,9 +64,6 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-
     chmod +x cmake-linux-x86_64.sh && \
     ./cmake-linux-x86_64.sh  --prefix=/opt --include-subdir --skip-licence && \
     rm cmake-linux-x86_64.sh
-
-# Adding git bloats the image by 95MB
-# RUN apt-get install -y git
 
 # get the toolchain
 RUN wget https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_GCC_VER}/binrel/arm-gnu-toolchain-${ARM_GCC_VER}-x86_64-arm-none-eabi.tar.xz -O gcc-arm-none-eabi.tar.xz -q --no-check-certificate && \
