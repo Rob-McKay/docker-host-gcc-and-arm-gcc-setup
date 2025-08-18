@@ -22,11 +22,9 @@ RUN apt-get update && apt-get install -y -f  --no-install-recommends wget softwa
 RUN update-ca-certificates
 
 RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
-
-#RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${CLANG_TIDY_VER} clang-tidy 
 RUN apt-add-repository "deb https://apt.llvm.org/noble/ llvm-toolchain-noble main" && \
- apt-add-repository "deb https://apt.llvm.org/noble/ llvm-toolchain-noble-${CLANG_TIDY_VER} main" && \
- apt-get update
+    apt-add-repository "deb https://apt.llvm.org/noble/ llvm-toolchain-noble-${CLANG_TIDY_VER} main" && \
+    apt-get update
 
 #RUN apt-get install -y clang-tidy-${CLANG_TIDY_VER}
 
@@ -45,22 +43,21 @@ RUN apt-get update && \
         flex \
         gcc-${HOST_GCC_VER} \
         libssl-dev \
-        ninja-build \
+        libstdc++6 \
         python3 \
         python3-pip \
         pylint \
-        clang-${CLANG_TIDY_VER} \
-        clang-tidy-${CLANG_TIDY_VER} \
-        llvm-${CLANG_TIDY_VER} \
-        libc++-${CLANG_TIDY_VER}-dev \
-        libc++abi-${CLANG_TIDY_VER}-dev \
-        libclang-${CLANG_TIDY_VER}-dev \
-        libclang-common-${CLANG_TIDY_VER}-dev \
         git \
         zip \
-        manpages- manpages-dev- --no-install-recommends
+        manpages- manpages-dev- --no-install-recommends && \
+    apt-get install -y -f \
+        ninja-build
 
-RUN pip install --break-system-packages cryptography setuptools && \
+RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${CLANG_TIDY_VER} clang  &&  apt-get install -y clang-tidy-${CLANG_TIDY_VER}
+
+RUN apt remove -y python3-cryptography
+
+RUN pip install --break-system-packages "cryptography>=42" "setuptools>=70" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     cpan install Digest::CRC
