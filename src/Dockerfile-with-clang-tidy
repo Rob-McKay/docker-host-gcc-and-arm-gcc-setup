@@ -49,8 +49,13 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         pylint \
+        clang-${CLANG_TIDY_VER} \
         clang-tidy-${CLANG_TIDY_VER} \
         llvm-${CLANG_TIDY_VER} \
+        libc++-${CLANG_TIDY_VER}-dev \
+        libc++abi-${CLANG_TIDY_VER}-dev \
+        libclang-${CLANG_TIDY_VER}-dev \
+        libclang-common-${CLANG_TIDY_VER}-dev \
         git \
         zip \
         manpages- manpages-dev- --no-install-recommends
