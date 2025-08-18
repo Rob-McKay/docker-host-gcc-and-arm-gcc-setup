@@ -25,23 +25,23 @@ RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted
 RUN apt-get update && \
 apt-get install -y -f libc6-dev --no-install-recommends && \
 apt-get install -y -f \
-bc \
-binutils \
-binutils-common \
-bison \
-bzip2 \
-flex \
-libssl-dev \
-make \
-ninja-build \
-perl \
-python3 \
-python3-pip \
-pylint \
-xz-utils \
-zip \
-cpp- cpp-13- gcc- g++- gcc-13- \
-manpages- manpages-dev- --no-install-recommends
+    bc \
+    binutils \
+    binutils-common \
+    bison \
+    bzip2 \
+    flex \
+    libssl-dev \
+    make \
+    ninja-build \
+    perl \
+    python3 \
+    python3-pip \
+    pylint \
+    xz-utils \
+    zip \
+    cpp- cpp-13- gcc- g++- gcc-13- \
+    manpages- manpages-dev- --no-install-recommends
 
 RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh &&  ./llvm.sh ${HOST_CLANG_VER} clang  &&  apt-get install -y clang-tidy-${HOST_CLANG_VER}
 
@@ -51,9 +51,10 @@ ENV CXX=clang++-${HOST_CLANG_VER}
 # Adding git bloats the image by 95MB
 RUN apt install -y git
 
-RUN    apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-cpan install Digest::CRC
+RUN pip install --break-system-packages "cryptography>=42" "setuptools>=70" && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    cpan install Digest::CRC
 
 WORKDIR /opt
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
