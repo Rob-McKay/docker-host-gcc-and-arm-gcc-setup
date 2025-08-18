@@ -51,6 +51,7 @@ ENV CXX=clang++-${HOST_CLANG_VER}
 # Adding git bloats the image by 95MB
 RUN apt install -y git
 
+RUN apt remove -y python3-cryptography
 RUN pip install --break-system-packages "cryptography>=42" "setuptools>=70" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
