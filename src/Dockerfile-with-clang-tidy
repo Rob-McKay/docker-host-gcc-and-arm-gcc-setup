@@ -1,6 +1,6 @@
 #FROM ubuntu:latest
-ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 FROM ubuntu:24.04
+ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 
 ENV ARM_GCC_PATH=/opt/gcc-arm-none-eabi
 ARG ARM_GCC_VER=14.2.rel1
@@ -42,8 +42,8 @@ RUN apt-get update && \
         bzip2 \
         flex \
         gcc-${HOST_GCC_VER} \
+        g++-${HOST_GCC_VER} \
         libssl-dev \
-        libstdc++6 \
         python3 \
         python3-pip \
         pylint \
