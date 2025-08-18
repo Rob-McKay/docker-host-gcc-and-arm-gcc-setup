@@ -1,6 +1,6 @@
 #FROM ubuntu:latest
-ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 FROM ubuntu:24.04
+ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 
 ENV ARM_GCC_PATH=/opt/gcc-arm-none-eabi
 ARG ARM_GCC_VER=14.2.rel1
@@ -37,6 +37,9 @@ RUN apt-get update && \
         wget \
         zip \
         manpages- manpages-dev- --no-install-recommends && \
+    apt remove -y python3-cryptography
+
+RUN pip install --break-system-packages "cryptography>=42" "setuptools>=70" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     cpan install Digest::CRC
