@@ -1,0 +1,13 @@
+#FROM ubuntu:latest
+ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
+FROM rmckaykm/gcc-and-arm-gcc-setup:latest
+
+# Copy the CA certificate from the context to the build container
+COPY zscaler-root-ca.crt /usr/local/share/ca-certificates/
+COPY zscaler-root-ca-zscalertwo.net.crt /usr/local/share/ca-certificates/
+COPY zscaler-root-ca-t.crt /usr/local/share/ca-certificates/
+
+# Update the CA certificates in the container
+RUN update-ca-certificates
+
+WORKDIR /home/build
