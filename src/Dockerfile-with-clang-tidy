@@ -8,7 +8,7 @@ ARG CMAKE_VER=3.31.6
 ARG HOST_GCC_VER=14
 ARG CLANG_TIDY_VER=20
 
-LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER}, clang-tidy and Python 3"
+LABEL Description="Image for building and debugging arm-embedded projects using the GCC ${ARM_GCC_VER} ARM toolchain which also has the host gcc-${HOST_GCC_VER} toolchain installed. Includes CMake ${CMAKE_VER}, clang-tidy-${CLANG_TIDY_VER} and Python 3"
 LABEL maintainer="Rob McKay"
 
 # wget is needed to get the clang key and ARM toolchain
@@ -40,6 +40,7 @@ RUN apt-get update && \
         bison \
         build-essential \
         bzip2 \
+        check \
         flex \
         gcc-${HOST_GCC_VER} \
         g++-${HOST_GCC_VER} \
